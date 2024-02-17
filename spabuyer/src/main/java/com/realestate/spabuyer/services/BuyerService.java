@@ -2,6 +2,8 @@ package com.realestate.spabuyer.services;
 
 import java.util.List;
 
+import com.realestate.spabuyer.dto.BuyerDto;
+import com.realestate.spabuyer.repo.BuyerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ import com.realestate.spabuyer.types.PropertyType;
 public class BuyerService {
 
 	private final PropertyService propertyService;
+	private final BuyerRepository buyerRepository;
 	
 	@Autowired
-	public BuyerService(PropertyService propertyService) {
+	public BuyerService(PropertyService propertyService, BuyerRepository buyerRepository) {
 		this.propertyService = propertyService;
+		this.buyerRepository = buyerRepository;
 	}
 	
 	// the buyer need to be taken from the context of the session
@@ -36,5 +40,9 @@ public class BuyerService {
 	// i still don't know how to do it, so let's leave it for the next steps.
 	public void buyProperty(Property property, Buyer buyer) {
 		propertyService.buyProperty(property, buyer);
+	}
+
+	List<Buyer> getAllBuyers() {
+		return buyerRepository.findAll();
 	}
 }

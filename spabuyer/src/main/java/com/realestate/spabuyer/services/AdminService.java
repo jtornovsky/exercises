@@ -2,6 +2,8 @@ package com.realestate.spabuyer.services;
 
 import java.util.List;
 
+import com.realestate.spabuyer.dto.AdminDto;
+import com.realestate.spabuyer.dto.BuyerDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class AdminService {
 	public AdminService(BuyerService buyerService, PropertyService propertyService) {
 		this.buyerService = buyerService;
 		this.propertyService = propertyService;
+	}
+
+	public List<BuyerDto> getAllBuyers() {
+		List<Buyer> buyers = buyerService.getAllBuyers();
+		return buyers.stream().map(BuyerDto::convert).toList();
 	}
 	
 	public List<PropertyDto> getBuyerProperties(Buyer buyer) {

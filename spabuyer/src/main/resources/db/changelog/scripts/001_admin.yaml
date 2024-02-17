@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 1
+      id: 001
       author: jonaht
       changes:
         - createTable:
-            tableName: Admin
+            tableName: admin
             columns:
               - column:
                   name: id
@@ -20,4 +20,4 @@ databaseChangeLog:
                     nullable: false
       rollback:
         - dropTable:
-            tableName: Admin
+            tableName: admin

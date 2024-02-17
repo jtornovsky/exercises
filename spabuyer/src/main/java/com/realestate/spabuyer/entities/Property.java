@@ -4,12 +4,12 @@ package com.realestate.spabuyer.entities;
 import com.realestate.spabuyer.types.PropertyType;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Entity
-@Data
+@Entity(name = "property")
+//@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Property {
@@ -20,6 +20,7 @@ public class Property {
 	private long propertyId;
 
 	@Column(name = "property_type", nullable = false)
+	@Enumerated(value = EnumType.STRING)
 	private PropertyType propertyType;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

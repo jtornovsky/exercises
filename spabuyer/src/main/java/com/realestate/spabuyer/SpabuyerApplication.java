@@ -8,6 +8,5 @@ public class SpabuyerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpabuyerApplication.class, args);
-//		return;
 	}
 }

@@ -11,6 +11,8 @@ import com.realestate.spabuyer.entities.Property;
 
 @Repository
 public interface BuyerRepository extends JpaRepository<Buyer, Long> {
+
+//	List<Buyer> findAll();
 	
 	@Query(/*appropriate select query*/)
 	List<Property> findPropertiesByBuyerId(long id);

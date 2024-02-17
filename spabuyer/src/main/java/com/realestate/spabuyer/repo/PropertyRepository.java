@@ -20,7 +20,7 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 	Property findPropertyByPropertyId(long id);
 
 	@Modifying
-	@Query("UPDATE Property p SET p.buyer.id = :buyerId WHERE p.id = :propertyId")
+	@Query("UPDATE property p SET p.buyer.id = :buyerId WHERE p.id = :propertyId")
 	void updateProperty(@Param("propertyId") long propertyId, @Param("buyerId") long buyerId);
 }
 
