@@ -83,17 +83,17 @@ public class Maze {
         mazeObj.solveMaze(maze4, new maze.Cell(maze.CellType.Entrance, 0, 1, true), new maze.Cell(maze.CellType.Exit, 4, 2, false));
         mazeObj.solveMaze(maze5, new maze.Cell(maze.CellType.Entrance, 0, 1, true), new maze.Cell(maze.CellType.Exit, 4, 2, false));
         mazeObj.solveMaze(maze6, new maze.Cell(maze.CellType.Entrance, 0, 1, true), new maze.Cell(maze.CellType.Exit, 8, 7, false));
+
     }
 
-    private void solveMaze(char[][] maze, Cell entrance, Cell exit) {
+    private void solveMaze(char[][] charMaze, Cell entrance, Cell exit) {
 
-        Set<Cell> visitedCells = new HashSet<>();
-        visitedCells.add(entrance);
+        Cell[][] maze = fillMaze(charMaze, entrance);
 
         Stack<Cell> path = new Stack<>();
         path.push(entrance);
 
-        Cell nextCell = findNextCell(maze, entrance, visitedCells);
+        Cell nextCell = findNextCell(maze, entrance);
         boolean pathFound = exit.equals(nextCell);
 
         while (!pathFound) {
@@ -104,11 +104,11 @@ public class Maze {
 
             if (nextCell != null) {
                 path.push(nextCell);
-                nextCell = findNextCell(maze, nextCell, visitedCells);
+                nextCell = findNextCell(maze, nextCell);
                 pathFound = exit.equals(nextCell);
             } else {
                 Cell previousCell = path.pop();
-                nextCell = findNextCell(maze, previousCell, visitedCells);
+                nextCell = findNextCell(maze, previousCell);
                 if (nextCell != null) {
                     // we don't remove the previous cell in case we found more options for the possible path
                     path.push(previousCell);
@@ -118,15 +118,14 @@ public class Maze {
 
         if (pathFound) {
             path.push(exit);
-            path.forEach(p -> System.out.print(p));
+            path.forEach(System.out::print);
             System.out.println();
         } else {
             System.out.println(" No path found.");
         }
-
     }
 
-    private Cell findNextCell(char[][] maze, Cell currentCell, Set<Cell> visitedCells) {
+    private Cell findNextCell(Cell[][] maze, Cell currentCell) {
         int[][] directions = {
                 {-1, 0}, // up
                 {0, -1}, // left
@@ -138,10 +137,9 @@ public class Maze {
             int line = currentCell.lineIdx + dir[0];
             int column = currentCell.columnIdx + dir[1];
             if (isValidPosition(line, column, maze)) {
-                Cell nextCell = new Cell(CellType.getCellType(maze[line][column]), line, column, false);
-                if (!visitedCells.contains(nextCell) && isPathableCell(nextCell)) {
+                Cell nextCell = maze[line][column];
+                if (!nextCell.isVisited && isPathableCell(nextCell)) {
                     nextCell.isVisited = true;
-                    visitedCells.add(nextCell);
                     return nextCell;
                 }
             }
@@ -149,15 +147,24 @@ public class Maze {
         return null;
     }
 
-    private boolean isValidPosition(int line, int column, char[][] maze) {
+    private boolean isValidPosition(int line, int column, Cell[][] maze) {
         return line >= 0 && line < maze.length && column >= 0 && column < maze[0].length;
     }
 
     private boolean isPathableCell(Cell cell) {
-        if (!cell.isVisited && cell.cellType == CellType.Path || cell.cellType == CellType.Exit) {
-            return true;
+        return !cell.isVisited && cell.cellType == CellType.Path || cell.cellType == CellType.Exit;
+    }
+
+    private Cell[][] fillMaze(char[][] charMaze, Cell entrance) {
+        Cell[][] cellMaze = new Cell[charMaze.length][charMaze[0].length];
+        for (int i = 0; i < charMaze.length; i++) {
+            for (int j = 0; j < charMaze[0].length; j++) {
+                Cell cell = new Cell(CellType.getCellType(charMaze[i][j]), i, j, false);
+                cellMaze[i][j] = cell;
+            }
         }
-        return false;
+        cellMaze[entrance.lineIdx][entrance.columnIdx].isVisited = true;
+        return cellMaze;
     }
 }
 
