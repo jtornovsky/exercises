@@ -1,0 +1,6 @@
+id 1 has different lines in the both files
+id 2 in the file f1 not found in the file f2
+id 3 in the file f1 not found in the file f2
+id 4 has identical lines in the both files
+id 5 in the file f1 not found in the file f2
+id 6 in the file f2 not found in the file f1
